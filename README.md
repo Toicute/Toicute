@@ -1,5 +1,6 @@
 - Cài đặt pip install -r requiment
 - Tải model từ https://drive.google.com/file/d/1999vPFp-NPqlLV2b8a5DVQYtBphQFZV1/view?usp=sharing 
+- Kết nối và truyền code vào arduino
 - Chạy file GUI.py
 - Hiện tại có 2 màn hình và một dòng chữ hiển thị số vật đã phát hiện. Sẽ phát triển thêm để dễ nhìn hơn.
 - Model hiện đang dùng là VGG 16.

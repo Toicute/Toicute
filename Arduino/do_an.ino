@@ -26,7 +26,7 @@ void loop() {
   // Đọc ký tự từ Serial rồi chuyển sang int
   x = Serial.readString().toInt();
   // Nếu sensor phát hiện vật thì gửi số 9 vào Serial ở dòng mới
-  if (digitalRead(sensor)==HIGH)
+  if (digitalRead(sensor)==LOW)
   {
     Serial.println('9');
     delay(5000);

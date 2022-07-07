@@ -19,7 +19,6 @@ class App:
         self.model = Model(path)
         self.arduino = serial.Serial(port='COM3', baudrate=9600, timeout=.1)
         self.sovat = 0
-
         # Tạo cửa sổ GUI
         self.window = window
         self.window.title = window_title
@@ -36,7 +35,9 @@ class App:
         self.canvas_2.pack(side=RIGHT)
         self.frame2 = Frame()
         self.frame2.pack(fill=BOTH)
-        self.label = Label(self.frame2, text=f"Đây là số vật {self.sovat}", font=("Arial Bold", 50))
+        self.label = Label(self.frame2, text=f"Số vật được phát hiện: {self.sovat}", font=("Arial Bold", 50))
+        self.label_2 = Label(self.frame2, text=f"Tình trạng vật", font=("Arial Bold", 50))
+        self.label_2.pack(side=RIGHT)
         self.label.pack(side=LEFT)
         self.delay = 15
 
@@ -52,6 +53,7 @@ class App:
         return data
 
     def predict(self, frame):
+        print(f"Đây là những gì đang có trong Serial {self.read()}")
         if self.read() == '9':
             self.crop = frame[:,  130:420]
             pred = self.model.predict(frame)
@@ -64,8 +66,9 @@ class App:
             print(pred)
             self.write(send)
             self.sovat += 1
-            print(f'Phát hiện vật, số vật là {self.sovat}')
-            self.label.configure(text=f"Đây là số vật {self.sovat}")
+            self.label.configure(text=f"Số vật được phát hiện: {self.sovat}")
+            self.label_2.configure(text=f"Vật được phân loại là: {pred}")
+
             self.crop = PIL.ImageTk.PhotoImage(image=PIL.Image.fromarray(self.crop))
             self.canvas_2.create_image(1, 0, image=self.crop, anchor=tkinter.NW)
 
@@ -78,23 +81,6 @@ class App:
         thread.start()
         self.window.after(self.delay, self.update)
 
-        # if i>50:
-        #     self.crop = PIL.ImageTk.PhotoImage(image=PIL.Image.fromarray(crop))
-        #     self.canvas2.create_image(1, 0, image=self.crop, anchor=tkinter.NW)
-        #     pred = self.model.predict(frame)
-        #     if pred == 'meo':
-        #         send = '3'
-        #     elif pred == 'sai_nhan':
-        #         send = '4'
-        #     else:
-        #         send = 'abc'
-        #     print(pred)
-        #     self.write(send)
-        #     self.sovat += 1
-        #     print(f'Phát hiện vật, số vật là {self.sovat}')
-        #     self.label.configure(text=f"Đây là số vật {self.sovat}")
-        #     i = 0
-        # i += 1
 
 class MyVideoCapture:
     def __init__(self, video_source=0):
@@ -119,7 +105,7 @@ class MyVideoCapture:
         else:
             return (ret, None)
 
-i = 0
+
 ret, frame = App(tkinter.Tk(), "Tkinter and OpenCV", path='model/content/vgg16_finetune.h15')
 
 

@@ -7,10 +7,11 @@ class Model():
     def __init__(self, path):
         self.path = path
         self.model = models.load_model(path)
-        self.class_name = ['dat', 'meo', 'sai_nhan']
+        self.class_name = ['background', 'dat', 'meo', 'sai_nhan']
 
     # Gọi predict, truyền vào khung hình cần dự đoán
     def predict(self, frame):
+        frame = frame/255
         frame = cv2.resize(frame, (224, 224))
         frame = np.expand_dims(frame, axis=0)
         pred = self.model.predict(frame)
